@@ -1,5 +1,3 @@
-
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -16,9 +14,23 @@ public class searchCategoryTest
     /**
      * Default constructor for test class searchCategoryTest
      */
-    public searchCategoryTest()
+    @Test
+    public void searchCategoryTest()
     {
         String testArray[] = new String[10];
+        testArray[0] = "Director";
+        testArray[1] = "Directing (Dramatic Picture)";
+        testArray[2] = "WRITING (Title Writing)";
+        testArray[3] = "Director";
+        testArray[4] = "Directing (Dramatic Picture)";
+        testArray[5] = "WRITING (Title Writing)";
+        testArray[6] = "Director";
+        testArray[7] = "Directing (Dramatic Picture)";
+        testArray[8] = "WRITING (Title Writing)";
+        testArray[9] = "Director";
+        searchCategory sc = new searchCategory();
+        sc.createCategoryList(testArray);
+        assertEquals(3,testArray.length);
     }
 
     /**
