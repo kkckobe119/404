@@ -2,7 +2,7 @@
 comment0.target=searchCategoryTest
 comment0.text=\r\n\ The\ test\ class\ searchCategoryTest.\r\n\r\n\ @author\ \ Paul\ Marchitiello\r\n\ @version\ v0.1\r\n
 comment1.params=
-comment1.target=void\ searchCategoryTest()
+comment1.target=void\ searchCategoryTest2()
 comment1.text=\r\n\ Default\ constructor\ for\ test\ class\ searchCategoryTest\r\n
 comment2.params=
 comment2.target=void\ setUp()
