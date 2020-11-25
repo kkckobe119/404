@@ -80,14 +80,16 @@ public class searchCategory
         
         /* Prompt user for category selection */
         Scanner userInput = new Scanner(System.in);
+        System.out.println();
         System.out.println("Enter Category");
         String selectedCategory = userInput.nextLine();
+        System.out.println();
         
         /* Checks for valid selection */
         System.out.println("Validating");
         for(int i = 0; i < categoryList.length; i++) 
         {
-            System.out.println("Compare: " + selectedCategory + " and " + categoryList[i]);
+            //System.out.println("Compare: " + selectedCategory + " and " + categoryList[i]);
             if (categoryList[i] == null)
                 break;
             if ( categoryList[i].equals(selectedCategory))
@@ -109,21 +111,23 @@ public class searchCategory
                     count++;
                 }
             }
+            /* Print list of selected categories to console */
+            System.out.println();
+            System.out.println("Category: " + selectedCategory);
+            for (int i = 0; i < selectedCategoryList.length; i++)
+            {
+                if (selectedCategoryList[i] != null)
+                {
+                    System.out.println(i + ": " + selectedCategoryList[i]);
+                }
+            }
         }
         else
         {
-            System.out.println("Invalid Category");
+            System.out.println();
+            System.out.println("Invalid Category: " + selectedCategory);
+            System.out.println();
             sortByCategory(x);
-        }
-        
-        /* Print list of selected categories to console */
-        System.out.println("Category: " + selectedCategory);
-        for (int i = 0; i < selectedCategoryList.length; i++)
-        {
-            if (selectedCategoryList[i] != null)
-            {
-                System.out.println(i + ": " + selectedCategoryList[i]);
-            }
         }
     }
 }
