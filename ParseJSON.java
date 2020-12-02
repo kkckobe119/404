@@ -30,12 +30,13 @@ public class ParseJSON<T>
             // Turns InputStream into a String
             Scanner s = new Scanner(isr).useDelimiter("\\A");
             String jsonString = s.hasNext() ? s.next() : "";
-            
-            // Parse String into a JsonElement using Wrapper Class
+
+            // Parse String into a Wrapper Class array using a JSON Element
             Gson gson = new Gson();
             hs = gson.fromJson(jsonString, HubioStructure[].class);
-            
-            ja = (JsonArray) new JsonParser().parse(jsonString);
+
+            // Parse the string into a JSON Array object
+            //ja = (JsonArray) new JsonParser().parse(jsonString);
 
         }
         catch (java.io.IOException ioe)
@@ -44,10 +45,16 @@ public class ParseJSON<T>
         }
     }
 
+
+    public HubioStructure[] getList() //Returns an array of the complete HubioStructures pulled from the database
+    {
+        return hs;
+    }
+
     /**
-     * Returns the category
-     */
-    public String getCategory()
+
+    public String getCategory()  // Returns the category
+
     {
         if(ja.isJsonArray()) 
         {
@@ -55,10 +62,11 @@ public class ParseJSON<T>
         }
         return null;
     }
-    
+
         public static void main(String[] args)
     {
         ParseJSON pj = new ParseJSON("");
         System.out.println(pj.getCategory());
     }
+    **/
 }
