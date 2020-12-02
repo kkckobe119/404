@@ -1,58 +1,134 @@
 import java.util.Scanner;
 /**
- * Write a description of class searchCategory here.
+ * Creates a list of available categories and searches for input category
  *
  * @author (Paul Marchitiello)
  * @version v0.1
  */
 public class searchCategory
 {
-    private String[] categoryList;
-    private String[] selectedCategoryList;
-
-    /**
-     * Constructor for objects of class searchCategory
-     */
-    public static void main(String args)
-    {
-        //createCategoryList( Insert String Array );
-    }
+   
+    public String[] categoryList = new String[30];
+    public String[] selectedCategoryList = new String[100];
     
-    public void createCategoryList(String[] x)
-    {
+    /*
+     * Creates a list of unique available categories
+     */
+    public String[] createCategoryList(String[] x)
+    {        
         int xCount = 0;
         int listCount = 0;
-        while( xCount < x.length)
+        Boolean unique = true;
+        
+        while ( xCount < x.length ) 
         {
-            if ( x[xCount] == null )
-                xCount++;
-            else if ( categoryList[0] == null )
+            //Checks if data entry is blank
+            if ( x[xCount] != null )
             {
-                categoryList[0] = x[xCount];
-                listCount++;
-            }
-            else if ( !categoryList[listCount].equals(x[xCount]))
-            {
-                categoryList[listCount] = x[xCount];
-                System.out.println(categoryList[listCount]);
-                listCount++;
+                //Checks if categoryList is empty
+                if ( categoryList[0] == null ) 
+                {
+                    categoryList[0] = x[xCount];                    
+                    listCount++;
+                }
+                //Finds unique strings and adds them to CategoryList
+                else  
+                {
+                    for ( int i = 0; i < listCount; i++)
+                    {
+                        if ( categoryList[i].equals(x[xCount]))
+                        {
+                            unique = false;
+                            break;
+                        }
+                    }
+                    if (unique)
+                    {
+                        categoryList[listCount] = x[xCount];
+                        listCount++;
+                        unique = true;
+                    }
+                }
             }
             xCount++;
-        } 
+        }
+        
+        return categoryList;
     }
     
-    public void sortByCategory()
-    {
+    /*
+     * Search and create list of input category
+     */
+    public void sortByCategory(String[] x)
+    {        
+        int count = 0;
+        Boolean valid = false;
+        
+        createCategoryList(x);
+        
+        /* Print category list to console */
+        System.out.println("Category List "); 
+        for (int i = 0; i < categoryList.length; i++) 
+        {
+            if (categoryList[i] != null)
+            {
+                System.out.println(i + ": " + categoryList[i]);
+            }
+            else 
+                break;
+        }
+        
+        /* Prompt user for category selection */
         Scanner userInput = new Scanner(System.in);
+        System.out.println();
         System.out.println("Enter Category");
         String selectedCategory = userInput.nextLine();
+        System.out.println();
         
-        for(int i = 0; i < categoryList.length; i++)
+        /* Checks for valid selection */
+        System.out.println("Validating");
+        for(int i = 0; i < categoryList.length; i++) 
         {
-            if (categoryList[i].equals(selectedCategory))
+            //System.out.println("Compare: " + selectedCategory + " and " + categoryList[i]);
+            if (categoryList[i] == null)
+                break;
+            if ( categoryList[i].equals(selectedCategory))
             {
+                valid = true;
                 break;
             }
         }
+        
+        /* If selected category valid, create list, 
+         * else output error and call sortByCategory*/  
+        if ( valid ) 
+        {
+            for ( int i = 0; i < x.length; i++ )
+            {
+                if (x[i].equals(selectedCategory))
+                {
+                    selectedCategoryList[count] = x[i];
+                    count++;
+                }
+            }
+            /* Print list of selected categories to console */
+            System.out.println();
+            System.out.println("Category: " + selectedCategory);
+            for (int i = 0; i < selectedCategoryList.length; i++)
+            {
+                if (selectedCategoryList[i] != null)
+                {
+                    System.out.println(i + ": " + selectedCategoryList[i]);
+                }
+            }
+        }
+        else
+        {
+            System.out.println();
+            System.out.println("Invalid Category: " + selectedCategory);
+            System.out.println();
+            sortByCategory(x);
+        }
     }
 }
+
