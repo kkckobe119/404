@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=OscarSearch
+comment0.text=\r\n\ Search\ by\ category,\ date\ or\ date\ range\r\n\r\n\ @author\ (Paul\ Marchitiello)\r\n\ @version\ v0.2\r\n
+comment1.params=
+comment1.target=void\ Start()
+comment2.params=
+comment2.target=void\ searchDate()
+comment3.params=
+comment3.target=void\ searchDateRange()
+comment4.params=
+comment4.target=void\ CreateCategoryList()
+comment4.text=\r\n\ Creates\ a\ list\ of\ unique\ available\ categories\r\n
+comment5.params=
+comment5.target=void\ searchCategory()
+comment5.text=\r\n\ Search\ and\ create\ list\ of\ input\ category\r\n
+numComments=6
