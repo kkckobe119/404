@@ -2,10 +2,10 @@
 dependency1.from=searchCategoryTest
 dependency1.to=searchCategory
 dependency1.type=UsesDependency
-editor.fx.0.height=1047
-editor.fx.0.width=974
-editor.fx.0.x=-7
-editor.fx.0.y=0
+editor.fx.0.height=1056
+editor.fx.0.width=1936
+editor.fx.0.x=-8
+editor.fx.0.y=-8
 objectbench.height=96
 objectbench.width=1133
 package.divider.horizontal=0.6

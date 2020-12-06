@@ -1,20 +1,105 @@
 import java.util.Scanner;
 /**
- * Creates a list of available categories and searches for input category
+ * Search by category, date or date range
  *
  * @author (Paul Marchitiello)
- * @version v0.1
+ * @version v0.2
  */
-public class searchCategory
+public class OscarSearch
 {
    
-    public String[] categoryList = new String[30];
+    public String[] categoryList = new String[100];
     public String[] selectedCategoryList = new String[100];
+    public int[] dateList = new int[100];
+    
+    // Prompts user for search type and calls appropriate method
+    public void Start(String[] x, int[] y)
+    {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println();
+        System.out.println("Would you like to search by 'category', 'date' or 'date range'?");
+        String searchType = userInput.nextLine();
+        System.out.println();
+        
+        if ( searchType == "category" )
+            searchCategory(x);
+        else if ( searchType == "date" )
+            searchDate(y);
+        else if ( searchType == "date range")
+            searchDateRange(y);
+        else
+        {
+            System.out.println("Invalid entry: " + searchType );
+            System.out.println();
+            Start(x,y);
+        }    
+    }
+    
+    //Seach for movies based on date
+    public void searchDate(int[] y)
+    {
+        int count = 0;
+        
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Enter date");
+        int selectedDate = userInput.nextInt();
+        System.out.println();
+        
+        //Find movies and add to array
+        for ( int i = 0; i < y.length; i++)
+        {
+            if ( y[i] == selectedDate )
+            {
+                dateList[count] = y[i];
+                System.out.println(count + ": " + dateList[count]);
+                count++;
+            }  
+        }
+        
+        //Error check if date not found
+        if ( count == 0 )
+        {
+            System.out.println("Could not find " + selectedDate + ", please try again.");
+            searchDate(y);
+        }
+    }
+    
+    //Search for movies based on date range with upper and lower bound
+    public void searchDateRange (int[] y)
+    {
+        int count = 0;
+        
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Enter starting date");
+        int startDate = userInput.nextInt();
+        System.out.println();
+        System.out.println("Enter end date");
+        int endDate = userInput.nextInt();
+        System.out.println();
+        
+        //Find movies that are within the given date range
+        for ( int i = 0; i < y.length; i++)
+        {
+            if ( y[i] >= startDate && y[i] <= endDate )
+            {
+                dateList[count] = y[i];
+                System.out.println(count + ": " + dateList[count]);
+                count++;
+            }  
+        }
+        
+        //Error check if no movies found within date range
+        if ( count == 0 )
+        {
+            System.out.println("Could not find " + startDate + " - " + endDate + ", please try again.");
+            searchDate(y);
+        }
+    }
     
     /*
      * Creates a list of unique available categories
      */
-    public String[] createCategoryList(String[] x)
+    public String[] CreateCategoryList(String[] x)
     {        
         int xCount = 0;
         int listCount = 0;
@@ -59,12 +144,12 @@ public class searchCategory
     /*
      * Search and create list of input category
      */
-    public void sortByCategory(String[] x)
+    public void searchCategory(String[] x)
     {        
         int count = 0;
         Boolean valid = false;
         
-        createCategoryList(x);
+        CreateCategoryList(x);
         
         /* Print category list to console */
         System.out.println("Category List "); 
@@ -127,7 +212,7 @@ public class searchCategory
             System.out.println();
             System.out.println("Invalid Category: " + selectedCategory);
             System.out.println();
-            sortByCategory(x);
+            searchCategory(x);
         }
     }
 }
