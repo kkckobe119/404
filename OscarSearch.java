@@ -7,19 +7,26 @@ import java.util.Scanner;
  */
 public class OscarSearch
 {
-    ParseJSON pj = new ParseJSON("");
-    HubioStructure[] hs; 
+    ParseJSON pj = new ParseJSON();
+    HubioStructure[] hs;
     
-    public int dataCount = 11057;
+    ParseCSV pc = new ParseCSV();
+    KaggleStructure[] ks; 
+    
+    public int hsCount = 11057;
+    public int ksCount = 10395;
     
     public String[] categoryList = new String[1000];
     public String[] selectedCategoryList = new String[1000];
-    HubioStructure[] selectedHS = new HubioStructure[10000];
+    
+    HubioStructure[] selectedHS = new HubioStructure[12000];
+    KaggleStructure[] selectedKS = new KaggleStructure[12000];
     
     // Prompts user for search type and calls appropriate method
     public void Start()
     {
         hs = pj.getList();
+        ks = pc.getList();
         
         Scanner userInput = new Scanner(System.in);
         System.out.println();
@@ -52,18 +59,28 @@ public class OscarSearch
         System.out.println();
         
         //Find movies and add to array
-        for ( int i = 0; i <= dataCount; i++)
+        for ( int i = 0; i < ks.length; i++)
         {
-            if ( hs[i].year == selectedDate )
+            //System.out.println(ks[i].category);
+            //System.out.println(selectedDate);
+            if (java.util.Objects.equals(ks[i].year, selectedDate) )
             {
-                selectedHS[count] = hs[i];
+                selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity, 
+                                                        ks[i].winner, ks[i].year, ks[i].film_name);
+                
+                AccessOMDB ao = new AccessOMDB(selectedKS[count].film_name);
+                String imdbLink = ao.getTopIMDB();
+                                                        
                 System.out.println(count + ": " 
-                + "Category " + selectedHS[count].category 
-                + " Entity " + selectedHS[count].entity 
-                + " Winner " + selectedHS[count].winner 
-                + " Year " + selectedHS[count].year);
+                + "Category " + selectedKS[count].category 
+                + " Entity " + selectedKS[count].entity 
+                + " Winner " + selectedKS[count].winner 
+                + " Year " + selectedKS[count].year
+                + " Film Name " + selectedKS[count].film_name
+                + "   IMDB Link " + imdbLink);
+                
                 count++;
-            }  
+            }
         }
         
         //Error check if date not found
@@ -72,6 +89,8 @@ public class OscarSearch
             System.out.println("Could not find " + selectedDate + ", please try again.");
             searchDate();
         }
+        
+        pj.toJSON(selectedKS);
     }
     
     //Search for movies based on date range with upper and lower bound
@@ -88,16 +107,20 @@ public class OscarSearch
         System.out.println();
         
         //Find movies that are within the given date range
-        for ( int i = 0; i <= dataCount; i++)
+        for ( int i = 0; i < ksCount; i++)
         {
-            if ( hs[i].year >= startDate && hs[i].year <= endDate )
+            if ( ks[i].year >= startDate && ks[i].year <= endDate )
             {
-                selectedHS[count] = hs[i];
+                selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity, 
+                                                        ks[i].winner, ks[i].year, ks[i].film_name);
+                                        
                 System.out.println(count + ": " 
-                + "Category " + selectedHS[count].category 
-                + " Entity " + selectedHS[count].entity 
-                + " Winner " + selectedHS[count].winner 
-                + " Year " + selectedHS[count].year);
+                + "Category " + selectedKS[count].category 
+                + " Entity " + selectedKS[count].entity 
+                + " Winner " + selectedKS[count].winner 
+                + " Year " + selectedKS[count].year
+                + " Film Name " + selectedKS[count].film_name);
+                
                 count++;
             }  
         }
@@ -108,6 +131,8 @@ public class OscarSearch
             System.out.println("Could not find " + startDate + " - " + endDate + ", please try again.");
             searchDate();
         }
+        
+        pj.toJSON(selectedKS);
     }
     
     /*
@@ -119,15 +144,15 @@ public class OscarSearch
         int listCount = 0;
         Boolean unique = true;
         
-        while ( xCount <= dataCount ) 
+        while ( xCount < ksCount ) 
         {
             //Checks if data entry is blank
-            if ( hs[xCount].category != null )
+            if ( ks[xCount].category != null )
             {
                 //Checks if categoryList is empty
                 if ( listCount == 0/*categoryList[0] == null*/ ) 
                 {
-                    categoryList[0] = hs[xCount].category;
+                    categoryList[0] = ks[xCount].category;
                     System.out.println(listCount + ": " + categoryList[listCount]);
                     listCount++;
                 }
@@ -136,14 +161,14 @@ public class OscarSearch
                 {
                     for ( int i = 0; i < listCount && unique == true; i++)
                     {
-                        if ( categoryList[i].equals(hs[xCount].category))
+                        if ( categoryList[i].equals(ks[xCount].category))
                         {
                             unique = false;
                         }
                     }
                     if (unique)
                     {
-                        categoryList[listCount] = hs[xCount].category;
+                        categoryList[listCount] = ks[xCount].category;
                         System.out.println(listCount + ": " + categoryList[listCount]);
                         listCount++;
                     }
@@ -152,6 +177,8 @@ public class OscarSearch
             }
             xCount++;
         }
+        
+        pj.toJSON(selectedKS);
     }
     
     /*
@@ -191,16 +218,20 @@ public class OscarSearch
          * else output error and call sortByCategory*/  
         if ( valid ) 
         {
-            for ( int i = 0; i <= dataCount; i++ )
+            for ( int i = 0; i < ksCount; i++ )
             {
-                if (hs[i].category.equals(selectedCategory))
+                if (ks[i].category.equals(selectedCategory))
                 {
-                    selectedHS[count] = hs[i];
+                    selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity, 
+                                                            ks[i].winner, ks[i].year, ks[i].film_name);
+                    
                     System.out.println(count + ": " 
-                    + "Category " + selectedHS[count].category 
-                    + " Entity " + selectedHS[count].entity 
-                    + " Winner " + selectedHS[count].winner 
-                    + " Year " + selectedHS[count].year);
+                    + "Category " + selectedKS[count].category 
+                    + " Entity " + selectedKS[count].entity 
+                    + " Winner " + selectedKS[count].winner 
+                    + " Year " + selectedKS[count].year
+                    + " Film Name " + selectedKS[count].film_name);
+                    
                     count++;
                 }
             }
@@ -212,6 +243,8 @@ public class OscarSearch
             System.out.println();
             searchCategory();
         }
+        
+        pj.toJSON(selectedKS);
     }
 }
 
