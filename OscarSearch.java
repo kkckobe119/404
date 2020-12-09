@@ -69,8 +69,8 @@ public class OscarSearch
             //System.out.println(selectedDate);
             if (java.util.Objects.equals(ks[i].year, selectedDate) )
             {
-                //AccessOMDB ao = new AccessOMDB(ks[i].film_name);
-                String imdbLink = "Test";//ao.getTopIMDB();
+                AccessOMDB ao = new AccessOMDB(ks[i].film_name);
+                String imdbLink = ao.getTopIMDB();
 
                 selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity,
                         ks[i].winner, ks[i].year, ks[i].film_name, imdbLink);
@@ -131,15 +131,19 @@ public class OscarSearch
         {
             if ( ks[i].year >= startDate && ks[i].year <= endDate )
             {
+                AccessOMDB ao = new AccessOMDB(ks[i].film_name);
+                String imdbLink = ao.getTopIMDB();
+
                 selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity,
-                        ks[i].winner, ks[i].year, ks[i].film_name);
+                        ks[i].winner, ks[i].year, ks[i].film_name, imdbLink);
 
                 System.out.println(count + ": "
                         + "Category " + selectedKS[count].category
                         + " Entity " + selectedKS[count].entity
                         + " Winner " + selectedKS[count].winner
                         + " Year " + selectedKS[count].year
-                        + " Film Name " + selectedKS[count].film_name);
+                        + " Film Name " + selectedKS[count].film_name
+                        + " IMDB Link " + selectedKS[count].imdbLink);
 
                 count++;
             }
@@ -242,15 +246,19 @@ public class OscarSearch
             {
                 if (ks[i].category.equals(selectedCategory))
                 {
+                    AccessOMDB ao = new AccessOMDB(ks[i].film_name);
+                    String imdbLink = ao.getTopIMDB();
+
                     selectedKS[count] = new KaggleStructure(ks[i].category, ks[i].entity,
-                            ks[i].winner, ks[i].year, ks[i].film_name);
+                            ks[i].winner, ks[i].year, ks[i].film_name, imdbLink);
 
                     System.out.println(count + ": "
                             + "Category " + selectedKS[count].category
                             + " Entity " + selectedKS[count].entity
                             + " Winner " + selectedKS[count].winner
                             + " Year " + selectedKS[count].year
-                            + " Film Name " + selectedKS[count].film_name);
+                            + " Film Name " + selectedKS[count].film_name
+                            + " IMDB Link " + selectedKS[count].imdbLink);
 
                     count++;
                 }
