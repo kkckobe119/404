@@ -1,22 +1,25 @@
-import com.google.gson.JsonElement;
+//import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import java.util.Scanner;
+//import java.util.Arrays;
 
-public class ParseJSON<T>
+public class ParseJSON
 {
-    private JsonArray ja;
+    //private JsonArray ja;
     private HubioStructure[] hs;
+    
        
-    public ParseJSON(String userInput)
+    public ParseJSON()
     {
         String hubioData = "Datasets/datahubio_oscar_data_json.json";
         try
@@ -30,14 +33,16 @@ public class ParseJSON<T>
             // Turns InputStream into a String
             Scanner s = new Scanner(isr).useDelimiter("\\A");
             String jsonString = s.hasNext() ? s.next() : "";
-
+            
             // Parse String into a Wrapper Class array using a JSON Element
             Gson gson = new Gson();
             hs = gson.fromJson(jsonString, HubioStructure[].class);
-
+            
             // Parse the string into a JSON Array object
             //ja = (JsonArray) new JsonParser().parse(jsonString);
-
+            
+            // Close the stream
+            fis.close();
         }
         catch (java.io.IOException ioe)
         {
@@ -45,28 +50,45 @@ public class ParseJSON<T>
         }
     }
 
-
-    public HubioStructure[] getList() //Returns an array of the complete HubioStructures pulled from the database
-    {
-        return hs;
-    }
-
-    /**
-
-    public String getCategory()  // Returns the category
-
+    /*
+    public String getCategory()
     {
         if(ja.isJsonArray()) 
         {
             return ( (JsonObject)ja.get(0) ).get("category").getAsString();
         }
         return null;
-    }
-
-        public static void main(String[] args)
+    }*/
+    public HubioStructure[] getList()
     {
-        ParseJSON pj = new ParseJSON("");
-        System.out.println(pj.getCategory());
+        return hs;
     }
-    **/
+    
+    public void toJSON(KaggleStructure[] dataStruct)
+    {
+        try
+        {
+        String filePath = "Datasets/output.json";
+        Gson gsonOutput = new Gson();
+        
+        gsonOutput.toJson(dataStruct, new FileWriter(filePath));
+        }
+        catch (java.io.IOException ioe)
+        {
+            System.out.println("IO Error");
+        }
+    }
+    
+    // public static void main(String[] args)
+    // {
+        // ParseJSON pj = new ParseJSON();
+        // HubioStructure[] hs = pj.getList();
+        
+        // pj.toJSON();
+        
+        // AccessOMDB ao = new AccessOMDB("");
+        
+        // //System.out.println(hs[1].film_name);
+        // //System.out.println(pj.getList());
+    // }
 }

@@ -3,8 +3,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.text.Collator; 
+
 public class ParseCSV
-{      
+{   
+    private KaggleStructure ks;
+    private KaggleStructure[] ksa;
+
     public ParseCSV()
     {
         String csvFile = "Datasets/KaggleData_the_oscar_award.csv";
@@ -13,47 +18,28 @@ public class ParseCSV
         String line = "";
         String cvsSplitBy = ",";
         
-        String[] oscarMovie = {"", "", "", "", "","",""};
-        String[][] oscarMovies = new String[1000][];
-
+        String[] oscarMovie;
+        String[][] oscarMovies = new String[10396][];
+        
+        ksa = new KaggleStructure[10395];
+        
         try 
         {
             br = new BufferedReader(new FileReader(csvFile));
             int i = 0;
-            
+                        
             while ((line = br.readLine()) != null) 
             {
-
-                // use comma as separator
-                oscarMovie = line.split(cvsSplitBy);
+               // use comma as separator
+               oscarMovie = line.split(cvsSplitBy);
                 
-                int count = 0;
-                while (count < 7)
-                {
-                    oscarMovies[i][count] = oscarMovie[count];
-                    count++;
-                }
-                
-                i++;
-                
-                // System.out.println("Movies [year_film= " + oscarMovies[0] +
-                                   // " , year_ceremony= " + oscarMovies[1] + 
-                                   // " , category= " + oscarMovies[3] +
-                                   // " , category_name= " + oscarMovies[4] +
-                                   // " , film_name= " + oscarMovies[5] +
-                                   // " , film_won= " + oscarMovies[6] +
-                                   // "]");
-                                   
-                System.out.println("Movies [year_film= " + oscarMovies[0][0] +
-                                   " , year_ceremony= " + oscarMovies[0][1] + 
-                                   " , category= " + oscarMovies[0][3] +
-                                   " , category_name= " + oscarMovies[0][4] +
-                                   " , film_name= " + oscarMovies[0][5] +
-                                   " , film_won= " + oscarMovies[0][6] +
-                                   "]");
-
+               oscarMovies[i] = new String[] {oscarMovie[0],  oscarMovie[1],  oscarMovie[2], 
+                                              oscarMovie[3],  oscarMovie[4],  oscarMovie[5], 
+                                              oscarMovie[6]};
+                                               
+               i++;
             }
-
+    
         } 
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -74,5 +60,20 @@ public class ParseCSV
                 }
             }
         }
+        
+        int j = 1;
+        while(j < oscarMovies.length)
+        {
+            ksa[j-1] = new KaggleStructure(oscarMovies[j][3], oscarMovies[j][4], 
+                                           Boolean.parseBoolean(oscarMovies[j][6]), 
+                                           Integer.parseInt(oscarMovies[j][0]), oscarMovies[j][5]);
+            
+            j++;
+        }
+    }
+    
+    public KaggleStructure[] getList()
+    {
+        return ksa;
     }
 }
